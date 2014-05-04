@@ -7,6 +7,8 @@
 
 Entrust provides a flexible way to add Role-based Permissions to **Laravel4**.
 
+This fork adds role inheritance and hierarchies to the core Entrust module.
+
 ## Quick start
 
 **PS:** Even though it's not needed. Entrust works very well with [Confide](https://github.com/Zizaco/confide) in order to eliminate repetitive tasks involving the management of users: Account creation, login, logout, confirmation by e-mail, password reset, etc.
