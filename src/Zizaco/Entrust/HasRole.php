@@ -63,6 +63,25 @@ trait HasRole
         return false;
     }
 
+	/**
+	* Check if user has a permission by its id.
+	*
+	* @param int $id Permission id.
+	*
+	* @access public
+	*
+	* @return boolean
+	*/
+	public function canId($id)
+	{
+		foreach ($this->roles as $role) {
+			foreach ($role->perms as $perm) {
+				if ($perm->id == $id) return true;
+			}
+		}
+		return false;
+	}
+
     /**
      * Checks role(s) and permission(s) and returns bool, array or both
      * @param string|array $roles Array of roles or comma separated string
