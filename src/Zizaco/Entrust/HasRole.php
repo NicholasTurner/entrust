@@ -82,6 +82,17 @@ trait HasRole
 		return false;
 	}
 
+	public function getPermIds()
+	{
+		$idList = array();
+		foreach ($this->roles as $role) {
+			foreach ($role->perms as $perm) {
+				$idList[] = $perm->id;
+			}
+		}
+		return $idList;
+	}
+
     /**
      * Checks role(s) and permission(s) and returns bool, array or both
      * @param string|array $roles Array of roles or comma separated string
