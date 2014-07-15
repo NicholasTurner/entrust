@@ -45,6 +45,7 @@ trait HasRole
      */
     public function can( $permission )
     {
+		$user->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
         foreach ($this->roles as $role) {
             // Deprecated permission value within the role table.
             if( is_array($role->permissions) && in_array($permission, $role->permissions) )
@@ -74,6 +75,7 @@ trait HasRole
 	*/
 	public function canId($id)
 	{
+		$user->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
 		foreach ($this->roles as $role) {
 			foreach ($role->perms as $perm) {
 				if ($perm->id == $id) return true;
@@ -82,8 +84,14 @@ trait HasRole
 		return false;
 	}
 
+	/**
+	Retrieve a list of permission ids available to the user.
+
+	@return array
+	*/
 	public function getPermIds()
 	{
+		$user->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
 		$idList = array();
 		foreach ($this->roles as $role) {
 			foreach ($role->perms as $perm) {
