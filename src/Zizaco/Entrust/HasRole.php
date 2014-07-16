@@ -45,7 +45,7 @@ trait HasRole
      */
     public function can( $permission )
     {
-		$user->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
+	$this->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
         foreach ($this->roles as $role) {
             // Deprecated permission value within the role table.
             if( is_array($role->permissions) && in_array($permission, $role->permissions) )
