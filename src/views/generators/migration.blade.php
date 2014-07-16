@@ -1,4 +1,4 @@
-{{ '<?php' }}
+<?php echo "<?php\n"; ?>
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -26,7 +26,8 @@ class EntrustSetupTables extends Migration {
             $table->increments('id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users'); // assumes a users table
+            $table->foreign('user_id')->references('id')->on('{{ Config::get('auth.table') }}')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles');
         });
 
@@ -34,7 +35,7 @@ class EntrustSetupTables extends Migration {
         Schema::create('permissions', function($table)
         {
             $table->increments('id')->unsigned();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('display_name');
             $table->timestamps();
         });
