@@ -75,7 +75,7 @@ trait HasRole
 	*/
 	public function canId($id)
 	{
-		$user->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
+		$this->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
 		foreach ($this->roles as $role) {
 			foreach ($role->perms as $perm) {
 				if ($perm->id == $id) return true;
@@ -91,7 +91,7 @@ trait HasRole
 	*/
 	public function getPermIds()
 	{
-		$user->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
+		$this->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
 		$idList = array();
 		foreach ($this->roles as $role) {
 			foreach ($role->perms as $perm) {
