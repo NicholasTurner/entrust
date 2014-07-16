@@ -107,7 +107,7 @@ trait HasRole
 
 	public function getRolelist()
 	{
-		$queue - $this->roles->all();
+		$queue = $this->roles->all();
 		$roleList = array();
 		
 		while ($queue) {
