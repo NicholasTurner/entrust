@@ -24,7 +24,8 @@ trait HasRole
      */
     public function hasRole( $name )
     {
-        foreach ($this->roles as $role) {
+//        foreach ($this->roles as $role) {
+		foreach ($this->getRoleList() as $role) {
             if( $role->name == $name )
             {
                 return true;
@@ -54,7 +55,8 @@ trait HasRole
             }
 
             // Validate against the Permission table
-            foreach($role->perms as $perm) {
+//            foreach($role->perms as $perm) {
+		foreach ($this->getRoleList() as $role) {
                 if($perm->name == $permission) {
                     return true;
                 }
@@ -76,7 +78,8 @@ trait HasRole
 	public function canId($id)
 	{
 		$this->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
-		foreach ($this->roles as $role) {
+//		foreach ($this->roles as $role) {
+		foreach ($this->getRoleList() as $role) {
 			foreach ($role->perms as $perm) {
 				if ($perm->id == $id) return true;
 			}
@@ -93,12 +96,27 @@ trait HasRole
 	{
 		$this->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
 		$idList = array();
-		foreach ($this->roles as $role) {
+//		foreach ($this->roles as $role) {
+		foreach ($this->getRoleList() as $role) {
 			foreach ($role->perms as $perm) {
 				$idList[] = $perm->id;
 			}
 		}
 		return $idList;
+	}
+
+	public function getRolelist()
+	{
+		$queue - $this->roles->all();
+		$roleList = array();
+		
+		while ($queue) {
+			$role = array_shift($queue);
+			if (! in_array($role, $roleList)) {
+				$roleList[] = $role;
+				array_push($queue, $role->children->all());
+			}
+		}
 	}
 
     /**
