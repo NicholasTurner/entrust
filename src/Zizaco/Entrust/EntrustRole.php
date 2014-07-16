@@ -52,6 +52,22 @@ class EntrustRole extends Ardent
         } catch(Execption $e) {}
     }
 
+	/**
+        Many-to-many relationship with Roles.
+        */
+        public function parents()
+        {
+                return $this->belongsToMany('Role', 'role_hierarchy', 'child_id', 'parent_id');
+        }
+
+        /**
+        Other half of many-to-many relationship with Roles.
+        */
+        public function children()
+        {
+                return $this->belongsToMany('Role', 'role_hierarchy', 'parent_id', 'child_id');
+        }
+
     /**
      * Before save should serialize permissions to save
      * as text into the database
