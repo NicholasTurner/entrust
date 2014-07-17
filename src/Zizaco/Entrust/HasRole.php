@@ -107,14 +107,14 @@ trait HasRole
 
 	public function getRolelist()
 	{
-		$queue = $this->roles;
+		$queue = (!is_null($this->roles) ? $this->roles->all() : array());
 		$roleList = array();
 		
 		while ($queue) {
 			$role = array_shift($queue);
 			if (! in_array($role, $roleList)) {
 				$roleList[] = $role;
-				array_push($queue, $role->children);
+				if (! is_null($role->children)) array_push($queue, $role->children->all());
 			}
 		}
 	}
