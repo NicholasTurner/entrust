@@ -103,7 +103,7 @@ trait HasRole
 
 	public function getRolelist()
 	{
-		$queue = $this->roles;
+		$queue = clone $this->roles;
 		$roleList = new \Illuminate\Support\Collection;
 		while (!$queue->isEmpty()) {
 			$role = $queue->shift();
