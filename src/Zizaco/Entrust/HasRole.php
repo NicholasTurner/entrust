@@ -24,7 +24,6 @@ trait HasRole
      */
     public function hasRole( $name )
     {
-//        foreach ($this->roles as $role) {
 		foreach ($this->getRoleList() as $role) {
             if( $role->name == $name )
             {
@@ -55,7 +54,6 @@ trait HasRole
             }
 
             // Validate against the Permission table
-//            foreach($role->perms as $perm) {
 		foreach ($this->getRoleList() as $role) {
                 if($perm->name == $permission) {
                     return true;
@@ -78,7 +76,6 @@ trait HasRole
 	public function canId($id)
 	{
 		$this->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
-//		foreach ($this->roles as $role) {
 		foreach ($this->getRoleList() as $role) {
 			foreach ($role->perms as $perm) {
 				if ($perm->id == $id) return true;
@@ -96,7 +93,6 @@ trait HasRole
 	{
 		$this->load('roles'); // FIXME Temporarily forcing reload of model to avoid desync bug.
 		$idList = array();
-//		foreach ($this->roles as $role) {
 		foreach ($this->getRoleList() as $role) {
 			foreach ($role->perms as $perm) {
 				$idList[] = $perm->id;
@@ -107,16 +103,16 @@ trait HasRole
 
 	public function getRolelist()
 	{
-		$queue = (!is_null($this->roles) ? $this->roles->all() : array());
-		$roleList = array();
-		
-		while ($queue) {
-			$role = array_shift($queue);
-			if (! in_array($role, $roleList)) {
-				$roleList[] = $role;
-				if (! is_null($role->children)) array_push($queue, $role->children->all());
+		$queue = $this->roles;
+		$roleList = new \Illuminate\Support\Collection;
+		while (!$queue->isEmpty()) {
+			$role = $queue->shift();
+			if (! $roleList->contains($role)) {
+				$roleList->push($role);
+				$queue = $queue->merge($role->children);
 			}
 		}
+		return $roleList;
 	}
 
     /**
