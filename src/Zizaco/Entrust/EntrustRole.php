@@ -68,6 +68,24 @@ class EntrustRole extends Ardent
                 return $this->belongsToMany('Role', 'role_hierarchy', 'parent_id', 'child_id');
         }
 
+	/**
+	Wrapper function for retrieving children.
+	Can be overwritten by subclasses.
+	*/
+	public function descendants()
+	{
+		return $this->children;
+	}
+
+	/**
+	Wrapper function for retrieving parents.
+	Can be overridden by subclasses.
+	*/
+	public function ancestors()
+	{
+		return $this->parents;
+	}
+
     /**
      * Before save should serialize permissions to save
      * as text into the database

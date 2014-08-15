@@ -115,7 +115,7 @@ trait HasRole
 			$role = $queue->shift();
 			if (! $roleList->contains($role)) {
 				$roleList->push($role);
-				$queue = $queue->merge($role->children);
+				$queue = $queue->merge($role->descendants());
 			}
 		}
 		return $roleList;
@@ -133,7 +133,7 @@ trait HasRole
 		// Add descendants of the user's roles to the queue.
 		$queue = new \Illuminate\Support\Collection;
 		foreach ($this->roles as $rootRole) {
-			$queue = $queue->merge($rootRole->children);
+			$queue = $queue->merge($rootRole->descendants());
 		}
 
 		// Iterate through the queue, adding all elements to the role list.
@@ -142,7 +142,7 @@ trait HasRole
 			$role = $queue->shift();
 			if (! $roleList->contains($role)) {
 				$roleList->push($role);
-				$queue = $queue->merge($role->children);
+				$queue = $queue->merge($role->descendants());
 			}
 		}
 		return $roleList;
