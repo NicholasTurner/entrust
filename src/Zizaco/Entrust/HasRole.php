@@ -113,7 +113,7 @@ trait HasRole
 		$roleList = new \Illuminate\Support\Collection;
 		while (!$queue->isEmpty()) {
 			$role = $queue->shift();
-			if (! $roleList->contains($role)) {
+			if (! in_array($role->id, array_pluck($roleList, 'id'))) {
 				$roleList->push($role);
 				$queue = $queue->merge($role->descendants());
 			}
