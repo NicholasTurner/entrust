@@ -121,33 +121,6 @@ trait HasRole
 		return $roleList;
 	}
 
-	/**
-	Retrieve a list of only those roles received via inheritance.
-	This may include roles the user owns directly, if roles they own
-	are dominated by other roles they own.
-
-	@return \Illuminate\Support\Collection
-	*/
-	public function getInheritedRoleList()
-	{
-		// Add descendants of the user's roles to the queue.
-		$queue = new \Illuminate\Support\Collection;
-		foreach ($this->roles as $rootRole) {
-			$queue = $queue->merge($rootRole->descendants());
-		}
-
-		// Iterate through the queue, adding all elements to the role list.
-		$roleList = new \Illuminate\Support\Collection;
-		while (!$queue->isEmpty()) {
-			$role = $queue->shift();
-			if (! $roleList->contains($role)) {
-				$roleList->push($role);
-				$queue = $queue->merge($role->descendants());
-			}
-		}
-		return $roleList;
-	}
-
     /**
      * Checks role(s) and permission(s) and returns bool, array or both
      * @param string|array $roles Array of roles or comma separated string
