@@ -55,13 +55,17 @@ class TestingModel
     function __construct()
     {
         // Simulates Eloquent's relation access
-        $role_a = m::mock('Role'); $role_a->name = "AdminA";
+        $role_a = m::mock('Role'); $role_a->name = "AdminA"; $role_a->id = 1;
+        $role_a->shouldReceive('descendants')->andReturn(array());
+        $role_a->shouldReceive('getKey')->andReturn(0);
         $role_a->permissions = array('manage_a','manage_b');
 
-        $role_b = m::mock('Role'); $role_b->name = "AdminB";
+        $role_b = m::mock('Role'); $role_b->name = "AdminB"; $role_b->id = 2;
+        $role_b->shouldReceive('descendants')->andReturn(array());
+        $role_b->shouldReceive('getKey')->andReturn(0);
         $role_b->permissions = array('manage_b','manage_c');
 
-        $this->roles = array($role_a, $role_b);
+        $this->roles = new \Illuminate\Database\Eloquent\Collection(array($role_a, $role_b));
 
         // Simulates Eloquent's relation access
         $permission_a = m::mock('Permission'); $permission_a->name = "manage_a";
@@ -69,7 +73,7 @@ class TestingModel
         $permission_b = m::mock('Permission'); $permission_b->name = "manage_b";
         $permission_b->display_name = "manage b";
 
-        $this->perms = array($permission_a, $permission_b);
+        $this->perms = new \Illuminate\Database\Eloquent\Collection(array($permission_a, $permission_b));
 
         $role_a->perms = $this->perms;
         $role_b->perms = $this->perms;
@@ -77,4 +81,7 @@ class TestingModel
 
     // Because this method is called by the trait
     public function belongsToMany($model, $table) {}
+
+    // FIXME Temporarily called by trait as part of desync workaround.
+    public function load($relation) {}
 }
