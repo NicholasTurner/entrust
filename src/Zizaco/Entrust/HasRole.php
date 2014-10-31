@@ -98,7 +98,7 @@ trait HasRole
 				$idList[] = $perm->id;
 			}
 		}
-		return array_unique($idList);
+		return array_values(array_unique($idList));
 	}
 
 	/**
