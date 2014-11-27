@@ -74,6 +74,7 @@ class EntrustRole extends Ardent
 	*/
 	public function descendants()
 	{
+		$this->load('children'); // FIXME Temporary forcing reload to avoid desync bug. Cropped up in WorkspaceController::testGetUserWorkspaces.
 		return $this->children;
 	}
 
